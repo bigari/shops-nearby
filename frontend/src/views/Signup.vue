@@ -12,10 +12,13 @@
                 colored-border
                 type="error"
                 elevation="2"
-              >{{ error }}</v-alert>
+                >{{ error }}</v-alert
+              >
               <v-card class="elevation-3">
                 <v-toolbar color="primary" dark flat>
-                  <v-toolbar-title class="headline">Signup Form</v-toolbar-title>
+                  <v-toolbar-title class="headline"
+                    >Signup Form</v-toolbar-title
+                  >
                 </v-toolbar>
                 <v-card-text>
                   <v-form v-model="isValid">
@@ -45,8 +48,13 @@
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
-                  <v-spacer/>
-                  <v-btn color="primary" :disabled="!isValid" @click.native="signup">Signup</v-btn>
+                  <v-spacer />
+                  <v-btn
+                    color="primary"
+                    :disabled="!isValid"
+                    @click.native="signup"
+                    >Signup</v-btn
+                  >
                 </v-card-actions>
               </v-card>
               <div class="d-flex mt-4">
@@ -90,7 +98,7 @@ export default {
         email: this.email,
         password: this.password
       });
-      if (response === false) {
+      if (!response.hasError) {
         this.error = "";
         this.$router.push("/");
         return;

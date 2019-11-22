@@ -14,6 +14,24 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    /**
+     * @typedef {Object} ErrorPayload
+     * @property {Number} statusCode The http status code
+     * @property {String} message The rest api error message
+     */
+
+    /**
+     * @typedef {Object} ApiErrorResponse
+     * @property {Boolean} hasError
+     * @property {ErrorPayload} error The response error
+     */
+
+    /**
+     * Sign in the user with his credentials
+     * @param  {ActionContext} context Vuex action context
+     * @param  {Object} credentials Wraps email and password strings
+     * @return {ApiErrorResponse}
+     */
     SIGNIN: async (context, credentials) => {
       let response = await fetch(`${API.ENDPOINT}/users/login`, {
         method: "POST",
@@ -30,10 +48,17 @@ export default new Vuex.Store({
           token: data.id,
           id: data.userId
         });
-        return false;
+        return { hasError: false, error: null };
       }
-      return data;
+      return { hasError: true, ...data }; // data wraps error payload
     },
+    /**
+     * Sign up the user with his credentials
+     * and automatically sign him in
+     * @param  {ActionContext} context Vuex action context
+     * @param  {Object} credentials Wraps email and password strings
+     * @return {ApiErrorResponse}
+     */
     SIGNUP: async (context, credentials) => {
       let response = await fetch(`${API.ENDPOINT}/users`, {
         method: "POST",
@@ -47,7 +72,7 @@ export default new Vuex.Store({
       if (response.status === 200) {
         return await context.dispatch("SIGNIN", credentials);
       }
-      return data;
+      return { hasError: true, ...data }; // data wraps error payload
     }
   },
   modules: {}
