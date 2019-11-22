@@ -33,6 +33,21 @@ export default new Vuex.Store({
         return false;
       }
       return data;
+    },
+    SIGNUP: async (context, credentials) => {
+      let response = await fetch(`${API.ENDPOINT}/users`, {
+        method: "POST",
+        headers: API.HEADERS,
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password
+        })
+      });
+      const data = await response.json();
+      if (response.status === 200) {
+        return await context.dispatch("SIGNIN", credentials);
+      }
+      return data;
     }
   },
   modules: {}

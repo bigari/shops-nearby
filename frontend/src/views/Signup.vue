@@ -5,37 +5,48 @@
         <v-container class="fill-height" fluid>
           <v-row align="center" justify="center">
             <v-col cols="12" sm="8" md="4">
+              <v-alert
+                v-if="error"
+                class="mb-4"
+                border="right"
+                colored-border
+                type="error"
+                elevation="2"
+              >{{ error }}</v-alert>
               <v-card class="elevation-3">
                 <v-toolbar color="primary" dark flat>
-                  <v-toolbar-title class="headline"
-                    >Signup Form</v-toolbar-title
-                  >
+                  <v-toolbar-title class="headline">Signup Form</v-toolbar-title>
                 </v-toolbar>
                 <v-card-text>
-                  <v-form>
+                  <v-form v-model="isValid">
                     <v-text-field
                       label="Email"
+                      v-model="email"
                       name="email"
+                      :rules="[rules.required, rules.emailFormat]"
                       prepend-icon="person"
                       type="text"
                     />
                     <v-text-field
                       label="Password"
+                      v-model="password"
                       name="password"
+                      :rules="[rules.required, rules.min]"
                       prepend-icon="lock"
                       type="password"
                     />
                     <v-text-field
                       label="Confirm Password"
                       name="confirm-password"
+                      :rules="[passwordMatchingRule]"
                       prepend-icon="lock"
                       type="password"
                     />
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
-                  <v-spacer />
-                  <v-btn color="primary">Signup</v-btn>
+                  <v-spacer/>
+                  <v-btn color="primary" :disabled="!isValid" @click.native="signup">Signup</v-btn>
                 </v-card-actions>
               </v-card>
               <div class="d-flex mt-4">
@@ -53,7 +64,43 @@
 </template>
 
 <script>
+import { rules } from "@/utils/rules";
+
 export default {
-  name: "signup"
+  name: "signup",
+  data() {
+    return {
+      error: "",
+      isValid: true,
+      email: "",
+      password: "",
+      rules: rules
+    };
+  },
+
+  methods: {
+    passwordMatchingRule(value) {
+      return value === this.password || "Password should match";
+    },
+    async signup() {
+      if (!this.isValid) {
+        return;
+      }
+      const response = await this.$store.dispatch("SIGNUP", {
+        email: this.email,
+        password: this.password
+      });
+      if (response === false) {
+        this.error = "";
+        this.$router.push("/");
+        return;
+      }
+      if (response.error.statusCode === 422) {
+        this.error = "Sorry this email is already in use";
+      } else {
+        this.error = "Error connecting to the server";
+      }
+    }
+  }
 };
 </script>
