@@ -5,6 +5,15 @@
         <v-container class="fill-height" fluid>
           <v-row align="center" justify="center">
             <v-col cols="12" sm="8" md="4">
+              <v-alert
+                v-if="hasFailed"
+                class="mb-4"
+                border="right"
+                colored-border
+                type="error"
+                elevation="2"
+                >Email or Password incorrect</v-alert
+              >
               <v-card class="elevation-3">
                 <v-toolbar color="primary" dark flat>
                   <v-toolbar-title class="headline"
@@ -12,15 +21,18 @@
                   >
                 </v-toolbar>
                 <v-card-text>
-                  <v-form>
+                  <v-form v-model="isValid">
                     <v-text-field
+                      v-model="email"
                       label="Email"
+                      :rules="[rules.required]"
                       name="email"
                       prepend-icon="person"
                       type="text"
                     />
                     <v-text-field
-                      id="password"
+                      v-model="password"
+                      :rules="[rules.required]"
                       label="Password"
                       name="password"
                       prepend-icon="lock"
@@ -30,7 +42,12 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer />
-                  <v-btn color="primary">Signin</v-btn>
+                  <v-btn
+                    color="primary"
+                    :disabled="!isValid"
+                    @click.native="signin"
+                    >Signin</v-btn
+                  >
                 </v-card-actions>
               </v-card>
               <div class="d-flex mt-4">
@@ -48,7 +65,37 @@
 </template>
 
 <script>
+import { rules } from "@/utils/rules";
+
 export default {
-  name: "signin"
+  name: "signin",
+  data() {
+    return {
+      hasFailed: false,
+      isValid: true,
+      email: "",
+      password: "",
+      rules: rules
+    };
+  },
+  methods: {
+    async signin() {
+      if (!this.isValid) {
+        return;
+      }
+      const response = await this.$store.dispatch("SIGNIN", {
+        email: this.email,
+        password: this.password
+      });
+      if (response === false) {
+        this.hasFailed = false;
+        this.$router.push("/");
+        return;
+      }
+      if (response.error.statusCode === 401) {
+        this.hasFailed = true;
+      }
+    }
+  }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="signup">
-      <v-app>
+    <v-app>
       <v-content>
         <v-container class="fill-height" fluid>
           <v-row align="center" justify="center">
