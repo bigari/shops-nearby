@@ -10,3 +10,9 @@ export default {
   })
 };
 </script>
+
+<style>
+.no-deco {
+  text-decoration: none;
+}
+</style>
