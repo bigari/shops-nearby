@@ -6,19 +6,16 @@
           <v-row align="center" justify="center">
             <v-col cols="12" sm="8" md="4">
               <v-alert
-                v-if="hasFailed"
+                v-if="error"
                 class="mb-4"
                 border="right"
                 colored-border
                 type="error"
                 elevation="2"
-                >Email or Password incorrect</v-alert
-              >
+              >{{ error }}</v-alert>
               <v-card class="elevation-3">
                 <v-toolbar color="primary" dark flat>
-                  <v-toolbar-title class="headline"
-                    >Signin Form</v-toolbar-title
-                  >
+                  <v-toolbar-title class="headline">Signin Form</v-toolbar-title>
                 </v-toolbar>
                 <v-card-text>
                   <v-form v-model="isValid">
@@ -41,13 +38,8 @@
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
-                  <v-spacer />
-                  <v-btn
-                    color="primary"
-                    :disabled="!isValid"
-                    @click.native="signin"
-                    >Signin</v-btn
-                  >
+                  <v-spacer/>
+                  <v-btn color="primary" :disabled="!isValid" @click.native="signin">Signin</v-btn>
                 </v-card-actions>
               </v-card>
               <div class="d-flex mt-4">
@@ -71,7 +63,7 @@ export default {
   name: "signin",
   data() {
     return {
-      hasFailed: false,
+      error: "",
       isValid: true,
       email: "",
       password: "",
@@ -88,12 +80,14 @@ export default {
         password: this.password
       });
       if (response === false) {
-        this.hasFailed = false;
+        this.error = "";
         this.$router.push("/");
         return;
       }
       if (response.error.statusCode === 401) {
-        this.hasFailed = true;
+        this.error = "Login failed: Email or password incorrect";
+      } else {
+        this.error = "Error connecting to the server";
       }
     }
   }
