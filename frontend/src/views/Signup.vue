@@ -21,7 +21,7 @@
               v-model="email"
               name="email"
               :rules="[rules.required, rules.emailFormat]"
-              prepend-icon="person"
+              prepend-icon="fa-envelope"
               type="text"
             />
             <v-text-field
@@ -29,14 +29,14 @@
               v-model="password"
               name="password"
               :rules="[rules.required, rules.min]"
-              prepend-icon="lock"
+              prepend-icon="fa-key"
               type="password"
             />
             <v-text-field
               label="Confirm Password"
               name="confirm-password"
               :rules="[passwordMatchingRule]"
-              prepend-icon="lock"
+              prepend-icon="fa-key"
               type="password"
             />
           </v-form>

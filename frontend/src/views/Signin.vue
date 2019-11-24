@@ -21,7 +21,7 @@
               label="Email"
               :rules="[rules.required]"
               name="email"
-              prepend-icon="person"
+              prepend-icon="fa-envelope"
               type="text"
             />
             <v-text-field
@@ -29,7 +29,7 @@
               :rules="[rules.required]"
               label="Password"
               name="password"
-              prepend-icon="lock"
+              prepend-icon="fa-key"
               type="password"
             />
           </v-form>
