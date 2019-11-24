@@ -2,19 +2,19 @@ const loopback = require("loopback");
 
 module.exports.category = [
   {
-    name: "Food"
+    name: "food"
   },
   {
-    name: "Clothing"
+    name: "clothing"
   },
   {
-    name: "Toys"
+    name: "toys"
   },
   {
-    name: "Cosmetics"
+    name: "cosmetics"
   },
   {
-    name: "Divers"
+    name: "divers"
   }
 ];
 
@@ -32,7 +32,7 @@ module.exports.shop = [
     location: new loopback.GeoPoint({ lat: 33.997178, lng: -6.857991 }),
     categoryId: 1,
     thumbnailUrl:
-      "https://drive.google.com/uc?id=1Y81wQGcjUK1Rrbf0PNXoem_J1gB0W8AM",
+      "https://drive.google.com/uc?id=1h3bINLcwCMNWFXFyFpL2IyvY0IqXfRVm",
     imageUrl: "https://drive.google.com/uc?id=1sR0MzibsM4eGvyZDze5xmpfRuUPO7g3j"
   },
   {
@@ -72,7 +72,8 @@ module.exports.shop = [
     location: new loopback.GeoPoint({ lat: 34.146997, lng: -6.703102 }),
     categoryId: 1,
     thumbnailUrl:
-      "https://drive.google.com/uc?id=1h3bINLcwCMNWFXFyFpL2IyvY0IqXfRVm",
+      "https://drive.google.com/uc?id=1Y81wQGcjUK1Rrbf0PNXoem_J1gB0W8AM",
+
     imageUrl: "https://drive.google.com/uc?id=1lpQHE4cRqKVPZ8i0C3mcEUTHuWeqjaOZ"
   }
 ];
