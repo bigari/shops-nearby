@@ -2,9 +2,16 @@ import { calcDistance } from "../utils/geoutil";
 
 export const Shop = {
   getters: {
+    /**
+     * Return sorted shops by distance
+     * The shops returned should not be liked
+     */
     sortedShops: state => {
-      return [...state.shops].sort((a, b) => b.distance < a.distance);
-    }
+      return [...state.shops]
+        .filter(shop => shop.likedAt === undefined)
+        .sort((a, b) => b.distance < a.distance);
+    },
+    
   },
   mutations: {
     /**

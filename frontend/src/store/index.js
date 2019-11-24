@@ -11,7 +11,6 @@ export default new Vuex.Store({
   state: {
     currentPosition: null,
     shops: [],
-    reactions: [],
     categories: {},
     user: null,
     config: {
