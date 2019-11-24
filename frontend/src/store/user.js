@@ -10,7 +10,7 @@ export const User = {
      * @param  {Array} token Authentication token
      */
     ADD_AUTH: (state, token) => {
-      state.config.headers.Authorization = `Bearer ${token}`;
+      state.config.headers.Authorization = token;
     }
   },
 

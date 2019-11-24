@@ -1,11 +1,5 @@
 export const Reaction = {
-  getters: {
-    likedShops: state => {
-      return [...state.shops]
-        .filter(shop => shop.likedAt !== undefined)
-        .sort((a, b) => b.distance < a.distance);
-    }
-  },
+  getters: {},
   mutations: {
     /**
      * For each shop set its reaction

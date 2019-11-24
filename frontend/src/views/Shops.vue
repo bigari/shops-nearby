@@ -60,9 +60,9 @@ export default {
   computed: {
     shops() {
       if (this.$store.state.position) {
-        return this.$store.getters.sortedShops;
+        return this.$store.getters.unlikedSortedShops;
       }
-      return this.$store.state.shops;
+      return this.$store.getters.unlikedShops;
     }
   },
 
