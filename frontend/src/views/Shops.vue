@@ -1,6 +1,6 @@
 <template>
   <div v-if="isLoading">
-    <loading caption="Fetching Shops"/>
+    <loading caption="Fetching Shops" />
   </div>
   <div v-else-if="error">
     <vertical-center>
@@ -18,7 +18,7 @@
         <div class="ma-2">
           <shop-card class="ma-4" :shop="shop">
             <v-btn text color="red darken-1">Dislike</v-btn>
-            <v-spacer/>
+            <v-spacer />
             <v-btn text color="green darken-1">Like</v-btn>
           </shop-card>
         </div>
@@ -59,6 +59,9 @@ export default {
 
   computed: {
     shops() {
+      if (this.$store.state.position) {
+        return this.$store.getters.sortedShops;
+      }
       return this.$store.state.shops;
     }
   },

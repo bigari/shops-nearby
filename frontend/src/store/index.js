@@ -1,11 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { API } from "../utils/constants";
+import { calcDistance } from "../utils/geoutil";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    currentPosition: null,
     shops: [],
     categories: {},
     user: null,
@@ -13,9 +15,25 @@ export default new Vuex.Store({
       headers: { ...API.HEADERS }
     }
   },
+  getters: {
+    sortedShops: state => {
+      return [...state.shops].sort((a, b) => b.distance < a.distance);
+    }
+  },
   mutations: {
     SET_USER: (state, user) => {
       state.user = user;
+    },
+
+    SET_CURRENT_POSITION: (state, position) => {
+      state.position = position;
+      let shops = [...state.shops];
+
+      shops.forEach(shop => {
+        shop.distance = calcDistance(position, shop.location);
+      });
+
+      state.shops = shops;
     },
     /**
      * Set Authorization header
@@ -44,6 +62,9 @@ export default new Vuex.Store({
     SET_SHOPS: (state, shops) => {
       const categorizedShops = [...shops].map(shop => {
         shop.category = state.categories[shop.categoryId];
+        if (state.position) {
+          shop.distance = calcDistance(state.position, shop.location);
+        }
         return shop;
       });
       state.shops = categorizedShops;
@@ -146,6 +167,22 @@ export default new Vuex.Store({
         url: "shops",
         mutation: "SET_SHOPS"
       });
+    },
+
+    QUERY_CURRENT_POSITION: async context => {
+      if ("geolocation" in navigator) {
+        /* geolocation is available */
+        navigator.geolocation.getCurrentPosition(position => {
+          context.commit("SET_CURRENT_POSITION", {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        });
+        return true;
+      } else {
+        /* geolocation IS NOT available */
+        return false;
+      }
     }
   },
   modules: {}
