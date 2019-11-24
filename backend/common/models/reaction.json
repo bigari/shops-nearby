@@ -1,0 +1,32 @@
+{
+  "name": "Reaction",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "likedAt": {
+      "type": "date",
+      "required": true
+    },
+    "dislikedAt": {
+      "type": "date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "shopper": {
+      "type": "belongsTo",
+      "model": "Shopper",
+      "foreignKey": ""
+    },
+    "shop": {
+      "type": "belongsTo",
+      "model": "Shop",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
