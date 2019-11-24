@@ -15,8 +15,11 @@ export const Reaction = {
       reactions.forEach(reaction => {
         const shop = indexedShops[reaction.shopId];
         if (shop) {
-          shop.likedAt = reaction.likedAt;
-          shop.dislikedAt = reaction.dislikedAt;
+          shop.reaction = {
+            likedAt: reaction.likedAt,
+            dislikedAt: reaction.dislikedAt,
+            id: reaction.id
+          };
         }
       });
       state.shops = shops;
@@ -29,12 +32,16 @@ export const Reaction = {
      */
     UPDATE_REACTION: (state, reaction) => {
       const shops = [...state.shops];
-      const shop = shops.find(reaction.shopId);
+      const shop = shops.find(shop => shop.id === reaction.shopId);
       if (shop === undefined) {
         return;
       }
-      shop.likedAt = reaction.likedAt;
-      shop.dislikedAt = reaction.dislikedAt;
+      shop.reaction = {
+        likedAt: reaction.likedAt,
+        dislikedA: reaction.dislikedAt,
+        id: reaction.id
+      };
+
       state.shops = shops;
     }
   },
@@ -46,14 +53,26 @@ export const Reaction = {
       });
     },
 
-    POST_LIKE: async (context, shop) => {
-      return await context.dispatch("POST", {
-        url: `shoppers/${context.state.user.id}/reactions`,
+    LIKE_SHOP: async (context, shop) => {
+      const jsonBody = {
+        userId: context.state.user.id,
+        shopId: shop.id,
+        likedAt: new Date().toISOString()
+      };
+      if (shop.reaction === undefined) {
+        //No reactions has ever been made
+        return await context.dispatch("POST", {
+          url: `shoppers/${context.state.user.id}/reactions`,
+          mutation: "UPDATE_REACTION",
+          jsonBody: jsonBody
+        });
+      }
+      return await context.dispatch("PUT", {
+        url: `shoppers/${context.state.user.id}/reactions/${shop.reactionId}`,
         mutation: "UPDATE_REACTION",
         jsonBody: {
-          userId: context.state.user.id,
-          shopId: shop.id,
-          likedAt: new Date().toISOString()
+          ...jsonBody,
+          dislikedAt: shop.dislikedAt === undefined ? null : shop.dislikedAt
         }
       });
     }
