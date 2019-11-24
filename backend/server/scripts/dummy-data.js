@@ -1,6 +1,6 @@
 const loopback = require("loopback");
 
-module.exports.category = [
+module.exports.Category = [
   {
     name: "food"
   },
@@ -18,7 +18,7 @@ module.exports.category = [
   }
 ];
 
-module.exports.shop = [
+module.exports.Shop = [
   {
     name: "Hugo Boss",
     location: new loopback.GeoPoint({ lat: 34.001678, lng: -6.853718 }),
