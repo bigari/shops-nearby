@@ -90,7 +90,7 @@ export default new Vuex.Store({
      * @return {ApiErrorResponse}
      */
     SIGNIN: async (context, credentials) => {
-      const response = await fetch(`${API.ENDPOINT}/users/login`, {
+      const response = await fetch(`${API.ENDPOINT}/shoppers/login`, {
         method: "POST",
         headers: API.HEADERS,
         body: JSON.stringify({
@@ -117,7 +117,7 @@ export default new Vuex.Store({
      * @return {ApiErrorResponse}
      */
     SIGNUP: async (context, credentials) => {
-      const response = await fetch(`${API.ENDPOINT}/users`, {
+      const response = await fetch(`${API.ENDPOINT}/shoppers`, {
         method: "POST",
         headers: API.HEADERS,
         body: JSON.stringify({
