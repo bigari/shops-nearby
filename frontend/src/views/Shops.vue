@@ -1,6 +1,6 @@
 <template>
   <div v-if="isLoading">
-    <loading caption="Fetching Shops" />
+    <loading caption="Fetching Shops"/>
   </div>
   <div v-else-if="error">
     <vertical-center>
@@ -18,12 +18,16 @@
         <div class="ma-2">
           <shop-card class="ma-4" :shop="shop">
             <v-btn text color="red darken-1">Dislike</v-btn>
-            <v-spacer />
-            <v-btn text color="green darken-1">Like</v-btn>
+            <v-spacer/>
+            <v-btn text color="green darken-1" @click="likeShop(shop)">Like</v-btn>
           </shop-card>
         </div>
       </v-col>
     </v-row>
+    <v-snackbar v-model="snackbar">
+      {{ info }}
+      <v-btn color="blue" text @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -42,17 +46,38 @@ export default {
   data() {
     return {
       isLoading: true,
-      error: null
+      error: null,
+      snackbar: false,
+      info: ""
     };
   },
 
   methods: {
     async fetchShops() {
       const response = await this.$store.dispatch("FETCH_SHOPS");
-      this.isLoading = false;
       if (response.hasError) {
         this.error = "Error connecting to the server";
         return;
+      }
+      await this.fetchReactions();
+      this.isLoading = false;
+    },
+
+    async fetchReactions() {
+      const response = await this.$store.dispatch("FETCH_REACTIONS");
+      if (response.hasError) {
+        this.error = "Error connecting to the server";
+        return;
+      }
+    },
+
+    async likeShop(shop) {
+      const response = await this.$store.dispatch("LIKE_SHOP", shop);
+      this.snackbar = "true";
+      if (response.hasError) {
+        this.info = "Error liking the shop";
+      } else {
+        this.info = "Shop added to preferences";
       }
     }
   },
