@@ -1,4 +1,5 @@
 import Vue from "vue";
+import store from "../store";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 
@@ -18,6 +19,14 @@ const routes = [
   {
     path: "/",
     component: Home,
+    beforeEnter: (to, from, next) => {
+      if (store.state.user) {
+        next();
+      } else {
+        next("/signin");
+      }
+      // ...
+    },
     children: [
       {
         path: "",
