@@ -45,8 +45,8 @@ export default new Vuex.Store({
      * Fetch resource at a given url and call the specified
      * mutation
      * @param  {ActionContext} context Vuex action context
-     * @param  {Object} parameters Wrap url, mutation to call
-     *                            and optionally get parameters
+     * @param  {Object} parameters Wrap url, mutation (optional) to call
+     *                            and get parameters (optional)
      * @return {ApiErrorResponse}
      */
     FETCH: async (context, parameters) => {
@@ -57,7 +57,9 @@ export default new Vuex.Store({
       });
       const data = await response.json();
       if (response.status === 200) {
-        context.commit(parameters.mutation, data);
+        if (parameters.mutation) {
+          context.commit(parameters.mutation, data);
+        }
         return { hasError: false, error: null };
       }
       return { hasError: true, error: data.error };
@@ -66,7 +68,7 @@ export default new Vuex.Store({
      * Post data to a given url and call the specified
      * mutation
      * @param  {ActionContext} context Vuex action context
-     * @param  {Object} parameters Wrap url, mutation to call
+     * @param  {Object} parameters Wrap url, mutation (optional) to call
      *                            and a jsonBody
      * @return {ApiErrorResponse}
      */
@@ -79,7 +81,33 @@ export default new Vuex.Store({
       });
       const data = await response.json();
       if (response.status === 200) {
-        context.commit(parameters.mutation, data);
+        if (parameters.mutation) {
+          context.commit(parameters.mutation, data);
+        }
+        return { hasError: false, error: null };
+      }
+      return { hasError: true, error: data.error };
+    },
+    /**
+     * Modify a resource at a given url and call the specified
+     * mutation
+     * @param  {ActionContext} context Vuex action context
+     * @param  {Object} parameters Wrap url, mutation (optional) to call
+     *                            and a jsonBody
+     * @return {ApiErrorResponse}
+     */
+    PUT: async (context, parameters) => {
+      const endpoint = context.state.config.endpoint;
+      const response = await fetch(`${endpoint}/${parameters.url}`, {
+        method: "PUT",
+        headers: context.state.config.headers,
+        body: JSON.stringify(parameters.jsonBody)
+      });
+      const data = await response.json();
+      if (response.status === 200) {
+        if (parameters.mutation) {
+          context.commit(parameters.mutation, data);
+        }
         return { hasError: false, error: null };
       }
       return { hasError: true, error: data.error };
