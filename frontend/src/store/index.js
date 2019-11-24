@@ -11,6 +11,7 @@ export default new Vuex.Store({
   state: {
     currentPosition: null,
     shops: [],
+    reactions: [],
     categories: {},
     user: null,
     config: {
@@ -54,6 +55,28 @@ export default new Vuex.Store({
       const response = await fetch(`${endpoint}/${parameters.url}`, {
         method: "GET",
         headers: context.state.config.headers
+      });
+      const data = await response.json();
+      if (response.status === 200) {
+        context.commit(parameters.mutation, data);
+        return { hasError: false, error: null };
+      }
+      return { hasError: true, error: data.error };
+    },
+    /**
+     * Post data to a given url and call the specified
+     * mutation
+     * @param  {ActionContext} context Vuex action context
+     * @param  {Object} parameters Wrap url, mutation to call
+     *                            and a jsonBody
+     * @return {ApiErrorResponse}
+     */
+    POST: async (context, parameters) => {
+      const endpoint = context.state.config.endpoint;
+      const response = await fetch(`${endpoint}/${parameters.url}`, {
+        method: "POST",
+        headers: context.state.config.headers,
+        body: JSON.stringify(parameters.jsonBody)
       });
       const data = await response.json();
       if (response.status === 200) {
