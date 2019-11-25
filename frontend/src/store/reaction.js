@@ -38,7 +38,7 @@ export const Reaction = {
       }
       shop.reaction = {
         likedAt: reaction.likedAt,
-        dislikedA: reaction.dislikedAt,
+        dislikedAt: reaction.dislikedAt,
         id: reaction.id
       };
 
@@ -68,11 +68,63 @@ export const Reaction = {
         });
       }
       return await context.dispatch("PUT", {
-        url: `shoppers/${context.state.user.id}/reactions/${shop.reactionId}`,
+        url: `shoppers/${context.state.user.id}/reactions/${shop.reaction.id}`,
         mutation: "UPDATE_REACTION",
         jsonBody: {
           ...jsonBody,
-          dislikedAt: shop.dislikedAt === undefined ? null : shop.dislikedAt
+          dislikedAt:
+            shop.reaction.dislikedAt === undefined
+              ? null
+              : shop.reaction.dislikedAt
+        }
+      });
+    },
+    DISLIKE_SHOP: async (context, shop) => {
+      console.log(1)
+      const jsonBody = {
+        userId: context.state.user.id,
+        shopId: shop.id,
+        dislikedAt: new Date().toISOString()
+      };
+      if (shop.reaction === undefined) {
+        console.log(2)
+        //No reactions has ever been made
+        return await context.dispatch("POST", {
+          url: `shoppers/${context.state.user.id}/reactions`,
+          mutation: "UPDATE_REACTION",
+          jsonBody: jsonBody
+        });
+      }
+      console.log(3)
+      return await context.dispatch("PUT", {
+        url: `shoppers/${context.state.user.id}/reactions/${shop.reaction.id}`,
+        mutation: "UPDATE_REACTION",
+        jsonBody: {
+          ...jsonBody,
+          likedAt:
+            shop.reaction.likedAt === undefined ? null : shop.reaction.likedAt
+        }
+      });
+    },
+    REMOVE_LIKE_SHOP: async (context, shop) => {
+      if (shop.reaction === undefined || !(shop.reaction.likedAt)) {
+        //Nothing to remove
+        return {
+          hasError: true,
+          error: { statusCode: 400, message: "Nothing to remove" }
+        };
+      }
+      return await context.dispatch("PUT", {
+        url: `shoppers/${context.state.user.id}/reactions/${shop.reaction.id}`,
+        mutation: "UPDATE_REACTION",
+        jsonBody: {
+          userId: context.state.user.id,
+          shopId: shop.id,
+          likedAt: null,
+          dislikedAt:
+            shop.reaction.dislikedAt === undefined
+              ? null
+              : shop.reaction.dislikedAt
         }
       });
     }
