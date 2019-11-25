@@ -7,8 +7,7 @@
   },
   "properties": {
     "likedAt": {
-      "type": "date",
-      "required": true
+      "type": "date"
     },
     "dislikedAt": {
       "type": "date"
