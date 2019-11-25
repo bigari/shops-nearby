@@ -1,6 +1,6 @@
 <template>
   <div v-if="isLoading">
-    <loading caption="Fetching Shops"/>
+    <loading caption="Fetching Shops" />
   </div>
   <div v-else-if="error">
     <vertical-center>
@@ -17,9 +17,11 @@
       <v-col lg="3" md="4" sm="6" xs="12" v-for="shop in shops" :key="shop.id">
         <div class="ma-2">
           <shop-card class="ma-4" :shop="shop">
-            <v-btn text color="red darken-1">Dislike</v-btn>
-            <v-spacer/>
-            <v-btn text color="green darken-1" @click="likeShop(shop)">Like</v-btn>
+            <v-btn text color="red darken-1" @click="dislikeShop(shop)">Dislike</v-btn>
+            <v-spacer />
+            <v-btn text color="green darken-1" @click="likeShop(shop)"
+              >Like</v-btn
+            >
           </shop-card>
         </div>
       </v-col>
@@ -73,11 +75,20 @@ export default {
 
     async likeShop(shop) {
       const response = await this.$store.dispatch("LIKE_SHOP", shop);
-      this.snackbar = "true";
+      this.snackbar = true;
       if (response.hasError) {
         this.info = "Error liking the shop";
       } else {
         this.info = "Shop added to preferences";
+      }
+    },
+    async dislikeShop(shop) {
+      const response = await this.$store.dispatch("DISLIKE_SHOP", shop);
+      this.snackbar = true;
+      if (response.hasError) {
+        this.info = "Error disliking the shop";
+      } else {
+        this.info = "Shop disliked";
       }
     }
   },
