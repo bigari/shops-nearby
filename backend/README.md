@@ -14,7 +14,7 @@ To make the app easy to setup it uses an in-memory database by default. Which me
 
 If you want to persist your data you can edit [server/datasources.json](server/datasources.json).
 
-###Configuration example:
+### Configuration example:
 
 ```json
 {
@@ -64,8 +64,11 @@ And 5 Relations:
 
 We only save the date at which the reaction has been made. (likedAt and dislikedAt)
 Given a shop and a user we should have 0 or 1 reaction.
+
 If the reaction does not exist then the shop has never been liked or disliked.
+
 If the reaction exists then the presence of likedAt indicates the shop has been liked and should appear only in user preferences.
-The presence of dislikedAt indicates the shop has been disliked and should not appear while currentDate - dislikedAt <= 2h.
+
+If the reaction exists then the presence of dislikedAt indicates the shop has been disliked and should not appear while currentDate - dislikedAt <= 2h.
 
 There is no functionnal need to make likedAt a date. But because dislikedAt has to be a date and we need to keep types consistent, it is so. Plus it embeds more information so we only increase our options.
