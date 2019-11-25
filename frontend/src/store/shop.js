@@ -1,10 +1,25 @@
 import { calcDistance } from "../utils/geoutil";
 
+//Shop is displayable if it has not been disliked
+// in the previous 2 hours
+
+const anHourInMillisecs = 60*60*1000
+
+const isShopDisplayable = shop => {
+  if (!shop.reaction || !shop.reaction.dislikedAt) {
+    return true;
+  }
+  const now = new Date();
+  const dislikedAt = new Date(shop.reaction.dislikedAt);
+  return (now - dislikedAt) / anHourInMillisecs > 2;
+};
+
 export const Shop = {
   getters: {
     likedShops: state => {
       return [...state.shops].filter(
-        shop => shop.reaction && shop.reaction.likedAt
+        shop =>
+          shop.reaction && shop.reaction.likedAt && isShopDisplayable(shop)
       );
     },
     /**
@@ -18,6 +33,15 @@ export const Shop = {
       return getters.likedShops.sort((a, b) => b.distance < a.distance);
     },
     /**
+     * Return shops that have no current likes
+     */
+    unlikedShops: state => {
+      return [...state.shops].filter(
+        shop =>
+          !shop.reaction || (!shop.reaction.likedAt && isShopDisplayable(shop))
+      );
+    },
+    /**
      * Return sorted shops by distance
      * The shops returned should have to not be liked
      */
@@ -26,11 +50,6 @@ export const Shop = {
         return getters.unlikedShops;
       }
       return getters.unlikedShops.sort((a, b) => b.distance < a.distance);
-    },
-    unlikedShops: state => {
-      return [...state.shops].filter(
-        shop => !(shop.reaction && shop.reaction.likedAt)
-      );
     }
   },
   mutations: {
