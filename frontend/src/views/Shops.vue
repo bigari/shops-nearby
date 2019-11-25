@@ -17,7 +17,9 @@
       <v-col lg="3" md="4" sm="6" xs="12" v-for="shop in shops" :key="shop.id">
         <div class="ma-2">
           <shop-card class="ma-4" :shop="shop">
-            <v-btn text color="red darken-1" @click="dislikeShop(shop)">Dislike</v-btn>
+            <v-btn text color="red darken-1" @click="dislikeShop(shop)"
+              >Dislike</v-btn
+            >
             <v-spacer />
             <v-btn text color="green darken-1" @click="likeShop(shop)"
               >Like</v-btn

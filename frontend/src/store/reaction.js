@@ -80,14 +80,12 @@ export const Reaction = {
       });
     },
     DISLIKE_SHOP: async (context, shop) => {
-      console.log(1)
       const jsonBody = {
         userId: context.state.user.id,
         shopId: shop.id,
         dislikedAt: new Date().toISOString()
       };
       if (shop.reaction === undefined) {
-        console.log(2)
         //No reactions has ever been made
         return await context.dispatch("POST", {
           url: `shoppers/${context.state.user.id}/reactions`,
@@ -95,7 +93,6 @@ export const Reaction = {
           jsonBody: jsonBody
         });
       }
-      console.log(3)
       return await context.dispatch("PUT", {
         url: `shoppers/${context.state.user.id}/reactions/${shop.reaction.id}`,
         mutation: "UPDATE_REACTION",
@@ -107,7 +104,7 @@ export const Reaction = {
       });
     },
     REMOVE_LIKE_SHOP: async (context, shop) => {
-      if (shop.reaction === undefined || !(shop.reaction.likedAt)) {
+      if (shop.reaction === undefined || !shop.reaction.likedAt) {
         //Nothing to remove
         return {
           hasError: true,

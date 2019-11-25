@@ -3,7 +3,7 @@ import { calcDistance } from "../utils/geoutil";
 //Shop is displayable if it has not been disliked
 // in the previous 2 hours
 
-const anHourInMillisecs = 60*60*1000
+const anHourInMillisecs = 60 * 60 * 1000;
 
 const isShopDisplayable = shop => {
   if (!shop.reaction || !shop.reaction.dislikedAt) {
