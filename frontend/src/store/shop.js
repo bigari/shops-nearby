@@ -58,7 +58,7 @@ export const Shop = {
      * location the distance between them
      */
     SET_CURRENT_POSITION: (state, position) => {
-      state.position = position;
+      state.currentPosition = position;
       let shops = [...state.shops];
 
       shops.forEach(shop => {
