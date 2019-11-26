@@ -2,17 +2,6 @@
   "name": "Reaction",
   "base": "PersistedModel",
   "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "properties": {
-    "likedAt": {
-      "type": "date"
-    },
-    "dislikedAt": {
-      "type": "date"
-    }
-  },
   "indexes": {
     "shopper_shop_index": {
       "keys": {
@@ -22,6 +11,17 @@
       "options": {
         "unique": true
       }
+    }
+  },
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "likedAt": {
+      "type": "date"
+    },
+    "dislikedAt": {
+      "type": "date"
     }
   },
   "validations": [],
@@ -37,6 +37,13 @@
       "foreignKey": ""
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    }
+  ],
   "methods": {}
 }

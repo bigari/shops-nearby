@@ -23,6 +23,52 @@
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": [
+        "__get__reactions",
+        "__count__reactions",
+        "__findById__reactions"
+      ]
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": [
+        "__get__reactions",
+        "__count__reactions",
+        "__findById__reactions"
+      ]
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": [
+        "__create__reactions",
+        "__delete__reactions",
+        "__updateById__reactions",
+        "__destroyById__reactions"
+      ]
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": [
+        "__create__reactions",
+        "__delete__reactions",
+        "__updateById__reactions",
+        "__destroyById__reactions"
+      ]
     }
   ],
   "methods": {}
