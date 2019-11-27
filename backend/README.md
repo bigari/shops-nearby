@@ -41,7 +41,7 @@ For more informations about datasources, head [here](https://loopback.io/doc/en/
 
 Loopback makes building rest-apis straightforward.
 You define the models, their relationships, eventually throw some seeds and add some ACLs.
-You get a running rest api following the openApi specifications (v2 for loopback 3).
+You get a running rest api following the openApi specification (v2 for loopback 3).
 The version 3 is built on top of Express therefore easy to extends (custom routes for instance).
 
 ## Models
@@ -72,3 +72,9 @@ If the reaction exists then the presence of likedAt indicates the shop has been 
 If the reaction exists then the presence of dislikedAt indicates the shop has been disliked and should not appear while currentDate - dislikedAt <= 2h.
 
 There is no functionnal need to make likedAt a date. But because dislikedAt has to be a date and we need to keep types consistent, it is so. Plus it embeds more information so we only increase our options.
+
+## Api Documentation
+
+Once the app is launched, you can check the endpoints at [http://localhost:3000/explorer](http://localhost:3000/explorer)
+
+It follows the [OpenApi 2 specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
