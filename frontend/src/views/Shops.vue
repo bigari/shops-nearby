@@ -13,7 +13,7 @@
     </vertical-center>
   </div>
   <div class="shops ma-4" v-else>
-    <v-row>
+    <transition-group name="list" tag="div" class="layout row wrap">
       <v-col lg="3" md="4" sm="6" xs="12" v-for="shop in shops" :key="shop.id">
         <div class="ma-2">
           <shop-card class="ma-4" :shop="shop">
@@ -27,7 +27,7 @@
           </shop-card>
         </div>
       </v-col>
-    </v-row>
+    </transition-group>
     <v-snackbar v-model="snackbar">
       {{ info }}
       <v-btn color="blue" text @click="snackbar = false">Close</v-btn>

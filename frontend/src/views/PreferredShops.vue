@@ -1,6 +1,11 @@
 <template>
   <div class="preferred-shops ma-4">
-    <v-row v-if="shops.length > 0">
+    <transition-group
+      name="list"
+      tag="div"
+      class="layout row wrap"
+      v-if="shops.length > 0"
+    >
       <v-col lg="3" md="4" sm="6" xs="12" v-for="shop in shops" :key="shop.id">
         <div class="ma-2">
           <shop-card class="ma-4" :shop="shop">
@@ -12,12 +17,12 @@
           </shop-card>
         </div>
       </v-col>
-    </v-row>
+    </transition-group>
     <vertical-center v-else>
       <v-row>
         <div class="mx-auto text-center">
-          <v-icon>fa-folder-open</v-icon>
-          <p class="mt-4">You have not liked any shops yet</p>
+          <v-icon large class="mb-4">fa-folder-open</v-icon>
+          <p class="mt-4 headline">You have not liked any shops yet</p>
         </div>
       </v-row>
       <v-snackbar v-model="snackbar">
